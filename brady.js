@@ -36,23 +36,14 @@ define(function(require, exports, module) {
                     win: "Ctrl-Shift-U" 
                 },
                 exec: function(editor){ 
-<<<<<<< HEAD
-                    var selection = editor.ace.selection.selectWordLeft();
-                    console.log(selection);
-                    var word = editor.ace.session.getTextRange();
-                    console.log(word);
-                    
-                    alert(word);
-=======
                     
                     editor.ace.selection.selectWordLeft();
-                    string = editor.ace.session.getTextRange();
+                    var string = editor.ace.session.getTextRange();
                     fs.readFile("/snippets/"+string, function(err, content){
                     if (err) return console.error(err);
                      editor.ace.insert(content);
                     });
 
->>>>>>> 740a069738f6afda65f9fa3d7039cea5d3cd489e
                 },
                 isAvailable: function(editor) {
                     /**
