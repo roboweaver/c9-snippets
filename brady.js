@@ -15,6 +15,20 @@ define(function(require, exports, module) {
         var emit = plugin.getEmitter();
         
         function load() {
+            console.log('start initializing file system');
+            fs.readdir("/snippets", function(err, list){
+                if (err){ 
+                    fs.mkdir("/snippets", function(err){
+                        if (err) { return console.error(err);}
+                    })
+                    return console.error(err); }
+
+                list.forEach(function(stat){
+                    console.log("Name:", stat.name, "Size:", stat.size);
+                });
+            });
+               
+        
             commands.addCommand({
                 name: "brady",
                 bindKey: { 
