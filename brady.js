@@ -1,5 +1,5 @@
 define(function(require, exports, module) {
-    main.consumes = ["Plugin", "commands", "tabManager"];
+    main.consumes = ["Plugin", "commands", "tabManager", "fs"];
     main.provides = ["brady"];
     return main;
 
@@ -7,6 +7,7 @@ define(function(require, exports, module) {
         var Plugin = imports.Plugin;
         var commands = imports.commands;
         var tabs = imports.tabManager;
+        var fs = imports.fs;
         
         /***** Initialization *****/
         
@@ -20,13 +21,21 @@ define(function(require, exports, module) {
                     mac: "Command-Shift-U", 
                     win: "Ctrl-Shift-U" 
                 },
-                exec: function(){ 
-                    alert("Success!");
+                exec: function(editor){ 
+                    var selection = editor.ace.selection.selectWordLeft();
+                    console.log(selection);
+                    var word = editor.ace.session.getTextRange();
+                    console.log(word);
+                    
+                    alert(word);
                 },
                 isAvailable: function(editor) {
+                    /**
                     if (editor && editor.ace)
                         return !editor.ace.selection.isEmpty();
                     return false;
+                    **/
+                    return true;
                 }
             }, plugin);
         }
