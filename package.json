@@ -1,0 +1,21 @@
+{
+  "name": "c9.ide.simple",
+  "description": "",
+  "version": "0.0.1",
+  "author": "",
+  "contributors": [
+    {
+      "name": "Brady ",
+      "email": "brady@c9.io"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "plugins": {
+    "brady": {}
+  },
+  "categories": ["miscellaneous"],
+  "licenses": []
+}
