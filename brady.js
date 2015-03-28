@@ -20,8 +20,15 @@ define(function(require, exports, module) {
                     mac: "Command-Shift-U", 
                     win: "Ctrl-Shift-U" 
                 },
-                exec: function(){ 
-                    alert("Success!");
+                exec: function(editor){ 
+                    
+                    editor.ace.selection.selectWordLeft();
+                    string = editor.ace.session.getTextRange();
+                    fs.readFile("/snippets/"+string, function(err, content){
+                    if (err) return console.error(err);
+                     editor.ace.insert(content);
+                    });
+
                 },
                 isAvailable: function(editor) {
                     if (editor && editor.ace)
