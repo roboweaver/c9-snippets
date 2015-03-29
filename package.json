@@ -1,21 +1,29 @@
 {
-  "name": "c9.ide.simple",
-  "description": "",
-  "version": "0.0.1",
-  "author": "",
-  "contributors": [
-    {
-      "name": "Brady ",
-      "email": "brady@c9.io"
-    }
-  ],
-  "repository": {
-    "type": "git",
-    "url": ""
-  },
-  "plugins": {
-    "brady": {}
-  },
-  "categories": ["miscellaneous"],
-  "licenses": []
+    "name": "c9.snippets",
+    "description": "Code snippets for C9 - Idea by Marshall Bean",
+    "version": "0.0.1",
+    "author": "",
+    "contributors": [
+        {
+            "name": "Brady Dowling",
+            "email": "brady@c9.io"
+        },
+        {
+            "name": "Rob Weaver",
+            "email": "rob@accuweaver.com"
+        },
+        {
+            "name": "Marshall Bean",
+            "email": ""
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+    "plugins": {
+        "snippets": {}
+    },
+    "categories": ["miscellaneous"],
+    "licenses": []
 }

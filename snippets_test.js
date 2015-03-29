@@ -1,7 +1,7 @@
 "use client";
 "use mocha";
 
-define(function(require, exports, module) {
+define(function (require, exports, module) {
     main.consumes = ["plugin.test", "myplugin"];
     main.provides = [];
     return main;
@@ -9,7 +9,7 @@ define(function(require, exports, module) {
     function main(options, imports, register) {
         var test = imports["plugin.test"];
         var myplugin = imports.myplugin;
-        
+
         var describe = test.describe;
         var it = test.it;
         var before = test.before;
@@ -18,30 +18,30 @@ define(function(require, exports, module) {
         var afterEach = test.afterEach;
         var assert = test.assert;
         var expect = test.expect;
-        
+
         /***** Initialization *****/
-        
-        describe("The module", function(){
+
+        describe("The module", function () {
             this.timeout(2000);
-            
-            beforeEach(function() {
+
+            beforeEach(function () {
             });
-        
+
             afterEach(function () {
             });
-            
-            it("has a sync test", function() {
+
+            it("has a sync test", function () {
             });
-            
-            it("has a async test", function(done) {
+
+            it("has a async test", function (done) {
                 done();
             });
-            
-            it("has a failing test", function() {
+
+            it("has a failing test", function () {
                 assert.equal(10, 11);
             });
         });
-        
+
         register(null, {});
     }
 });
