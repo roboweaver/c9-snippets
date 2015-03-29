@@ -1,6 +1,6 @@
 define(function (require, exports, module) {
     main.consumes = ["Plugin", "commands", "tabManager", "fs"];
-    main.provides = ["brady"];
+    main.provides = ["snippets"];
     return main;
 
     function main(options, imports, register) {
@@ -35,7 +35,7 @@ define(function (require, exports, module) {
 
 
             commands.addCommand({
-                name: "brady",
+                name: "snippets",
                 bindKey: {
                     mac: "Command-Shift-U",
                     win: "Ctrl-Shift-U"
@@ -81,7 +81,7 @@ define(function (require, exports, module) {
         });
 
         register(null, {
-            "brady": plugin
+            "snippets": plugin
         });
     }
 });
