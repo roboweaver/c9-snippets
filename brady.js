@@ -21,6 +21,7 @@ define(function(require, exports, module) {
                     fs.mkdir("/snippets", function(err){
                         if (err) { return console.error(err);}
                     })
+                    fs.writeFile("/snippets/html5",'<!doctype html>\n<html>\n<head>\n<meta charset="UTF-8">\n<title></title>\n</head>\n<body>\n</body>\n</html>\n', function(err){})
                     return console.error(err); }
 
                 list.forEach(function(stat){
