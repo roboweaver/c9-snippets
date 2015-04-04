@@ -1,5 +1,5 @@
 define(function (require, exports, module) {
-    main.consumes = ["Plugin", "ui", "commands", "tabManager", "fs"];
+    main.consumes = ["Plugin", "Dialog", "ui", "commands", "tabManager", "fs"];
     main.provides = ["snippets"];
     return main;
 
@@ -12,6 +12,7 @@ define(function (require, exports, module) {
      */
     function main(options, imports, register) {
         var Plugin = imports.Plugin;
+        var Dialog = imports.Dialog;
         var ui = imports.ui;
         var commands = imports.commands;
         var tabs = imports.tabManager;
@@ -22,7 +23,27 @@ define(function (require, exports, module) {
         var plugin = new Plugin("Ajax.org", main.consumes);
         var emit = plugin.getEmitter();
 
-        var showing;
+        // Create the popup for settings ...
+        var snippetSettings = new Dialog("Settings", main.consumes, {
+            name: "snippet-settings",
+            allowClose: true,
+            title: "Snippet Settings",
+            width: "50em"
+        });
+        
+        // Draw the dialog ...
+        snippetSettings.on("draw", function (e) {
+            // Insert HTML
+            var markup = require("text!./snippets.html");
+            e.html.innerHTML = "<div id='snippetsControlPanel'>TODO write control panel</div>";
+            
+            // Insert css
+            var css = require("text!./snippets.css");
+            ui.insertCss(css, options.staticPrefix, snippetSettings);
+
+        });
+
+
         // Load the plugin attributes ...
         function load() {
             console.log('start initializing file system');
@@ -37,7 +58,7 @@ define(function (require, exports, module) {
                     });
                     // Now create a file with the html5 snippet in it
                     fs.writeFile("/snippets/html5", '<!DOCTYPE html>\n<!--\nTo change this template file, open the template from your snippets folder in the editor.\n-->\n<html>\n\t<head>\n\t\t<title>TODO supply a title</title>\n\t\t<meta charset="UTF-8">\n\t\t<meta name="viewport" content="width=device-width, initial-scale=1.0">\n\t</head>\n\t<body>\n\t\t<div>TODO write content</div>\n\t</body>\n</html>'
-                                   , function (err) {
+                            , function (err) {
                                 if (err) {
                                     return console.error(err);
                                 }
@@ -70,7 +91,7 @@ define(function (require, exports, module) {
                             //        This is probably where we want to put 
                             //        help and/or UI for the snippets.
                             //
-                            show();
+                            snippetSettings.show();
                             return console.error(err);
                         }
                         // Replace the selected text with our snippet.
@@ -91,44 +112,8 @@ define(function (require, exports, module) {
             }, plugin);
         }
 
-        var drawn = false;
-        function draw() {
-            if (drawn)
-                return;
-            drawn = true;
-
-            // Insert HTML
-            var markup = require("text!./snippets.html");
-            ui.insertHtml(document.body, markup, plugin);
-
-            // Insert CSS
-            ui.insertCss(require("text!./snippets.css"), options.staticPrefix, plugin);
-
-            emit("draw");
-        }
 
         /***** Methods *****/
-
-        function show() {
-            draw();
-
-            var div = document.querySelector("#snippetsControlPanel");
-            // Really need to add the onclick method here so we can hide it
-            div.style.display = "block";
-            emit("show");
-            showing = true;
-        }
-
-        function hide() {
-            if (!drawn)
-                return;
-            var div = document.querySelector("#snippetsControlPanel");
-            
-            div.style.display = "none";
-
-            emit("hide");
-            showing = false;
-        }
 
         /***** Lifecycle *****/
 
@@ -136,8 +121,6 @@ define(function (require, exports, module) {
             load();
         });
         plugin.on("unload", function () {
-            drawn = false;
-            showing = false;
         });
 
         /***** Register and define API *****/
