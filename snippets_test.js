@@ -2,7 +2,7 @@
 "use mocha";
 
 define(function (require, exports, module) {
-    main.consumes = ["plugin.test", "myplugin"];
+    main.consumes = ["plugin.test", "snippets"];
     main.provides = [];
     return main;
 

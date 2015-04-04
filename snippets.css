@@ -1,0 +1,13 @@
+#snippetsControlPanel{
+    padding: 2em;
+    background: lightyellow;
+    position: absolute;
+    left: 5em;
+    top: 8em;
+    z-index: 100000;
+    width: 50em;
+    height: 30em;
+    background-size: cover;
+    box-sizing: border-box;
+    color: #e87d0d;
+}
