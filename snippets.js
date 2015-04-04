@@ -17,6 +17,8 @@ define(function (require, exports, module) {
         var commands = imports.commands;
         var tabs = imports.tabManager;
         var fs = imports.fs;
+        var snippetsFolder = '/snippets';
+        var snippetsList =[];
 
         /***** Initialization *****/
 
@@ -30,17 +32,36 @@ define(function (require, exports, module) {
             title: "Snippet Settings",
             width: "50em"
         });
-        
+
         // Draw the dialog ...
         snippetSettings.on("draw", function (e) {
             // Insert HTML
             var markup = require("text!./snippets.html");
-            e.html.innerHTML = "<div id='snippetsControlPanel'>TODO write control panel</div>";
-            
+            e.html.innerHTML = markup;
+
+            document.querySelector('#snippetControlList');
+
             // Insert css
             var css = require("text!./snippets.css");
             ui.insertCss(css, options.staticPrefix, snippetSettings);
 
+        });
+        
+        snippetSettings.on("show", function(e){
+            var snippetControlList = document.querySelector('#snippetControlList');
+            snippetControlList.innerHTML = '<table><thead><tr><th>Name</th><th>Size</th><tr></thead><tbody></tbody></table>';
+            
+            function processFiles(stat, index){
+                var tHead = snippetControlList.querySelector('tbody');
+                var displayList = document.createElement('tr');
+                displayList.innerHTML = '<td>' + stat.name + '</td><td>' + stat.size + '</td>';
+                console.log(displayList);
+                tHead.appendChild(displayList);
+                console.log(index, "Name:", stat.name, "Size:", stat.size);
+            };
+
+            console.log('snippetsList', snippetsList);
+            snippetsList.forEach(processFiles);
         });
 
 
@@ -48,16 +69,16 @@ define(function (require, exports, module) {
         function load() {
             console.log('start initializing file system');
             // If we don't have the folder, we need to create it
-            fs.readdir("/snippets", function (err, list) {
+            fs.readdir(snippetsFolder, function (err, list) {
                 if (err) {
                     // No folder found, so we need to make one ...
-                    fs.mkdir("/snippets", function (err) {
+                    fs.mkdir(snippetsFolder, function (err) {
                         if (err) {
                             return console.error(err);
                         }
                     });
                     // Now create a file with the html5 snippet in it
-                    fs.writeFile("/snippets/html5", '<!DOCTYPE html>\n<!--\nTo change this template file, open the template from your snippets folder in the editor.\n-->\n<html>\n\t<head>\n\t\t<title>TODO supply a title</title>\n\t\t<meta charset="UTF-8">\n\t\t<meta name="viewport" content="width=device-width, initial-scale=1.0">\n\t</head>\n\t<body>\n\t\t<div>TODO write content</div>\n\t</body>\n</html>'
+                    fs.writeFile(snippetsFolder + "/html5", '<!DOCTYPE html>\n<!--\nTo change this template file, open the template from your snippets folder in the editor.\n-->\n<html>\n\t<head>\n\t\t<title>TODO supply a title</title>\n\t\t<meta charset="UTF-8">\n\t\t<meta name="viewport" content="width=device-width, initial-scale=1.0">\n\t</head>\n\t<body>\n\t\t<div>TODO write content</div>\n\t</body>\n</html>'
                             , function (err) {
                                 if (err) {
                                     return console.error(err);
@@ -68,6 +89,7 @@ define(function (require, exports, module) {
                     // Error returned above if we have problems, so we don't need this one
                     // return console.error(err);
                 }
+                snippetsList = list;
             });
 
             // Add the keystrok command
@@ -83,7 +105,7 @@ define(function (require, exports, module) {
                     // Get the value of the text we selected
                     var string = editor.ace.session.getTextRange();
                     // Get the file that goes with this snippet
-                    fs.readFile("/snippets/" + string, function (err, content) {
+                    fs.readFile(snippetsFolder + string, function (err, content) {
                         if (err) {
                             // TODO - add some code here if we don't find a match
                             //        for the snippet in the "string"
