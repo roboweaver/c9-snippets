@@ -18,15 +18,14 @@ define(function (require, exports, module) {
         var tabs = imports.tabManager;
         var fs = imports.fs;
         var snippetsFolder = '/snippets';
-        var snippetsList =[];
+        var snippetsList = [];
 
         /***** Initialization *****/
 
         var plugin = new Plugin("Ajax.org", main.consumes);
-        var emit = plugin.getEmitter();
 
         // Create the popup for settings ...
-        var snippetSettings = new Dialog("Settings", main.consumes, {
+        var snippetSettingsDialog = new Dialog("Settings", main.consumes, {
             name: "snippet-settings",
             allowClose: true,
             title: "Snippet Settings",
@@ -34,7 +33,7 @@ define(function (require, exports, module) {
         });
 
         // Draw the dialog ...
-        snippetSettings.on("draw", function (e) {
+        snippetSettingsDialog.on("draw", function (e) {
             // Insert HTML
             var markup = require("text!./snippets.html");
             e.html.innerHTML = markup;
@@ -46,19 +45,21 @@ define(function (require, exports, module) {
             ui.insertCss(css, options.staticPrefix, snippetSettings);
 
         });
-        
-        snippetSettings.on("show", function(e){
+
+        // The callback for the show dialog ...
+        snippetSettingsDialog.on("show", function (e) {
             var snippetControlList = document.querySelector('#snippetControlList');
             snippetControlList.innerHTML = '<table><thead><tr><th>Name</th><th>Size</th><tr></thead><tbody></tbody></table>';
-            
-            function processFiles(stat, index){
+
+            function processFiles(stat, index) {
                 var tHead = snippetControlList.querySelector('tbody');
                 var displayList = document.createElement('tr');
                 displayList.innerHTML = '<td>' + stat.name + '</td><td>' + stat.size + '</td>';
                 console.log(displayList);
                 tHead.appendChild(displayList);
                 console.log(index, "Name:", stat.name, "Size:", stat.size);
-            };
+            }
+            ;
 
             console.log('snippetsList', snippetsList);
             snippetsList.forEach(processFiles);
@@ -107,13 +108,8 @@ define(function (require, exports, module) {
                     // Get the file that goes with this snippet
                     fs.readFile(snippetsFolder + string, function (err, content) {
                         if (err) {
-                            // TODO - add some code here if we don't find a match
-                            //        for the snippet in the "string"
-                            //        
-                            //        This is probably where we want to put 
-                            //        help and/or UI for the snippets.
-                            //
-                            snippetSettings.show();
+                            // Show the settings
+                            snippetSettingsDialog.show();
                             return console.error(err);
                         }
                         // Replace the selected text with our snippet.
@@ -133,7 +129,6 @@ define(function (require, exports, module) {
                 }
             }, plugin);
         }
-
 
         /***** Methods *****/
 
